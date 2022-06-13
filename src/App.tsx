@@ -1,12 +1,13 @@
-import React from 'react';
-import GlobalStyles from './assets/styles/global'
+import GlobalStyles from './assets/styles/global';
+import { DefaultTheme, ThemeProvider } from 'styled-components'
+import defaultTheme from './assets/styles/themes/default'
 
 function App() {
   return (
-    <>
+    <ThemeProvider theme={defaultTheme as DefaultTheme}>
       <GlobalStyles />
-      <h1>My contacts</h1>
-    </>
+      <h1>MyContacts</h1>
+    </ThemeProvider>
   );
 }
 

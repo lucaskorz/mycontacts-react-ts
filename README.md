@@ -1,3 +1,3 @@
-# Projeto My Contacts | JSTACK
+# Project My Contacts | JSTACK
 
-Projeto front-end do curso JSTack.
+Projeto front-end utilizando React em Typescript

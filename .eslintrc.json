@@ -21,6 +21,7 @@
         "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
         "react/react-in-jsx-scope": "off",
         "linebreak-style": 0,
-        "react/jsx-no-useless-fragment": "off"
+        "react/jsx-no-useless-fragment": "off",
+        "import/no-unresolved": "off"
     }
 }

@@ -22,6 +22,10 @@
         "react/react-in-jsx-scope": "off",
         "linebreak-style": 0,
         "react/jsx-no-useless-fragment": "off",
-        "import/no-unresolved": "off"
+        "import/no-unresolved": "off",
+        "import/extensions": "off",
+        "import/prefer-default-export": "off",
+        "react/self-closing-comp": "off",
+        "quotes": "off"
     }
 }

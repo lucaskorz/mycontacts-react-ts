@@ -17,5 +17,8 @@
     "jsx": "react-jsx"
   },
   "include": ["src"],
-  "files": ["src/assets/styles/styled.d.ts"]
+  "files": [
+    "src/assets/styles/styled.d.ts",
+    "src/assets/images/custom.d.ts"
+  ]
 }

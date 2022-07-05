@@ -32,7 +32,45 @@ export default function ContactsList() {
           <span>(47) 98867-1028</span>
         </div>
 
-        <div>
+        <div className="actions">
+          <a href="/">
+            <img src={edit} alt="edit" />
+          </a>
+          <button type="button">
+            <img src={trash} alt="edit" />
+          </button>
+        </div>
+      </Card>
+      <Card>
+        <div className="info">
+          <div className="contact-name">
+            <strong>Lucas Korz</strong>
+            <small>instagram</small>
+          </div>
+          <span>lucaskorz10@gmail.com</span>
+          <span>(47) 98867-1028</span>
+        </div>
+
+        <div className="actions">
+          <a href="/">
+            <img src={edit} alt="edit" />
+          </a>
+          <button type="button">
+            <img src={trash} alt="edit" />
+          </button>
+        </div>
+      </Card>
+      <Card>
+        <div className="info">
+          <div className="contact-name">
+            <strong>Lucas Korz</strong>
+            <small>instagram</small>
+          </div>
+          <span>lucaskorz10@gmail.com</span>
+          <span>(47) 98867-1028</span>
+        </div>
+
+        <div className="actions">
           <a href="/">
             <img src={edit} alt="edit" />
           </a>

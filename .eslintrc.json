@@ -26,6 +26,8 @@
         "import/extensions": "off",
         "import/prefer-default-export": "off",
         "react/self-closing-comp": "off",
-        "quotes": "off"
+        "quotes": "off",
+        "comma-dangle": "off",
+        "no-trailing-spaces": "off"
     }
 }

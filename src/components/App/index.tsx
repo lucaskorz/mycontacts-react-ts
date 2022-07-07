@@ -5,7 +5,6 @@ import defaultTheme from "../../assets/styles/themes/default";
 import { Container } from "./styles";
 import Header from "../Header";
 import Routes from "../../routes";
-import ContactsList from "../ContactsList";
 
 function App() {
   return (
@@ -15,7 +14,6 @@ function App() {
         <Container>
           <Header />
           <Routes />
-          <ContactsList />
         </Container>
       </ThemeProvider>
     </BrowserRouter>

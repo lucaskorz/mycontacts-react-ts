@@ -4,7 +4,27 @@ export const Container = styled.div`
   margin-top: 32px;
 `;
 
+export const InputSearchContainer = styled.div`
+  width: 100%;
+
+  input {
+    width: 100%;
+    background: #fff;
+    border-radius: 25px;
+    border: none;
+    height: 50px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0 ,0.04);
+    outline: 0;
+    padding: 0 16px;
+
+    &::placeholder {
+      color: #BCBCBC
+    }
+  }
+`;
+
 export const Header = styled.header`
+  margin-top: 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;

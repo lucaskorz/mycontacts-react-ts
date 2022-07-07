@@ -1,3 +1,7 @@
 export default function EditContact() {
-  return 'EditContact';
+  return (
+    <>
+      <p>New Contact</p>
+    </>
+  )
 }

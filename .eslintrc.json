@@ -28,6 +28,8 @@
         "react/self-closing-comp": "off",
         "quotes": "off",
         "comma-dangle": "off",
-        "no-trailing-spaces": "off"
+        "no-trailing-spaces": "off",
+        "semi": "off",
+        "no-unused-vars": "off"
     }
 }

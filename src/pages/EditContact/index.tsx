@@ -1,7 +1,12 @@
+import ContactForm from "../../components/ContactForm";
+import PageHeader from "../../components/PageHeader";
+
 export default function EditContact() {
   return (
     <>
-      <p>New Contact</p>
+      <PageHeader title="Editar Lucas Korz" />
+
+      <ContactForm buttonLabel="Salvar alterações" />
     </>
-  )
+  );
 }

@@ -30,6 +30,11 @@
         "comma-dangle": "off",
         "no-trailing-spaces": "off",
         "semi": "off",
-        "no-unused-vars": "off"
+        "no-unused-vars": "off",
+        "no-undef": "off",
+        "no-confusing-arrow": "off",
+        "indent": "off",
+        "implicit-arrow-linebreak": "off",
+        "react/jsx-boolean-value": "off"
     }
 }

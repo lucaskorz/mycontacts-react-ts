@@ -1,3 +1,5 @@
+import ReactDOM from "react-dom";
+
 import Button from "../Button";
 import { Overlay, Container, Footer } from "./styles";
 
@@ -17,7 +19,7 @@ const defaultProps: IModalOptionalProps = {
 };
 
 function Modal({ bodyModel, danger, title }: IModalProps) {
-  return (
+  return ReactDOM.createPortal(
     <Overlay>
       <Container danger={danger}>
         <h1>{title}</h1>
@@ -31,7 +33,8 @@ function Modal({ bodyModel, danger, title }: IModalProps) {
           </Button>
         </Footer>
       </Container>
-    </Overlay>
+    </Overlay>,
+    document.getElementById("modal-root") as HTMLElement
   );
 }
 

@@ -12,7 +12,7 @@ const Input = styled.input<InputProps>`
   border: 2px solid #fff;
   border-radius: 4px;
   height: 52px;
-  padding: 0 16px;
+  padding: 0 17px;
   font-size: 16px;
   transition: border-color 0.2s ease-in;
 

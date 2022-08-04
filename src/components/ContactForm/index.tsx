@@ -36,6 +36,10 @@ export default function ContactForm({ buttonLabel }: ContactFormProps) {
     }
   }
 
+  function getErrorMessageByFieldName(fieldName: string): string | undefined {
+    return errors.find((error) => error.field === fieldName)?.message
+  }
+
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
   }
@@ -44,18 +48,19 @@ export default function ContactForm({ buttonLabel }: ContactFormProps) {
     <Form
       onSubmit={() => handleSubmit}
     >
-      <FormGroup>
+      <FormGroup error={getErrorMessageByFieldName('name')}>
         <Input
+          error={!!getErrorMessageByFieldName('name')}
           placeholder="Nome"
           value={name}
           onChange={(e) => handleNameChance(e)}
         />
       </FormGroup>
 
-      <FormGroup error="O formato do e-mail é inválido">
+      <FormGroup error={getErrorMessageByFieldName('email')}>
         <Input
+          error={!!getErrorMessageByFieldName('email')}
           placeholder="E-mail"
-          error
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />

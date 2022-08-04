@@ -1,43 +1,64 @@
+import { ChangeEvent, FormEvent, useState } from "react";
 import FormGroup from "../FormGroup";
 import Input from "../Input";
 import Select from "../Select";
 import Button from "../Button";
 import { Form, ButtonContainer } from "./styles";
-import { FormEvent, useState } from "react";
 
 type ContactFormProps = {
   buttonLabel: string;
+};
+
+type Errors = {
+  field: string
+  message: string
 }
 
 export default function ContactForm({ buttonLabel }: ContactFormProps) {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-  const [category, setCategory] = useState('')
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [category, setCategory] = useState("");
+  const [errors, setErrors] = useState<Errors[]>([]);
+
+  function handleNameChance(event: ChangeEvent<HTMLInputElement>) {
+    setName(event.currentTarget.value)
+
+    if (!event.currentTarget.value) {
+      setErrors((prevState) => [
+        ...prevState,
+        { field: 'name', message: 'Nome é obrigatório' }
+      ]);
+    } else {
+      setErrors((prevState) => prevState.filter(
+        (errs) => errs.field !== 'name'
+      ))
+    }
+  }
 
   function handleSubmit(event: FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form
+      onSubmit={() => handleSubmit}
+    >
       <FormGroup>
         <Input
           placeholder="Nome"
           value={name}
-          onChange={(event) => setName(event.target.value)}
+          onChange={(e) => handleNameChance(e)}
         />
       </FormGroup>
 
-      <FormGroup
-        error="O formato do e-mail é inválido"
-      >
+      <FormGroup error="O formato do e-mail é inválido">
         <Input
           placeholder="E-mail"
           error
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          />
+        />
       </FormGroup>
 
       <FormGroup>
@@ -60,7 +81,9 @@ export default function ContactForm({ buttonLabel }: ContactFormProps) {
       </FormGroup>
 
       <ButtonContainer>
-        <Button danger={false} type="submit">{buttonLabel}</Button>
+        <Button danger={false} type="submit">
+          {buttonLabel}
+        </Button>
       </ButtonContainer>
     </Form>
   );

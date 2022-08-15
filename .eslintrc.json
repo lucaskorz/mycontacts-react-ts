@@ -35,6 +35,8 @@
         "no-confusing-arrow": "off",
         "indent": "off",
         "implicit-arrow-linebreak": "off",
-        "react/jsx-boolean-value": "off"
+        "react/jsx-boolean-value": "off",
+        "react/jsx-no-bind": "off",
+        "space-in-parens": "off"
     }
 }

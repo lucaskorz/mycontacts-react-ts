@@ -5,8 +5,21 @@ import {
 import arrow from '../../assets/images/icons/arrow.svg';
 import edit from '../../assets/images/icons/edit.svg';
 import trash from '../../assets/images/icons/trash.svg';
+import { useEffect } from 'react';
 
 export default function Home() {
+  useEffect(() => {
+    fetch('http://localhost:3001/contacts')
+    .then(async (response) => {
+      const json = await response.json()
+      json.foreach((response: any) => {
+        console.log(response?.name)
+      })
+    }).catch((error: any) => {
+      console.log('erro: ', error)
+    })
+  }, [])
+
   return (
     <Container>
 

@@ -8,16 +8,17 @@ import { Contact } from "../../models/Contacts";
 import {
   Container,
   Header,
-  ListContainer,
   Card,
   InputSearchContainer,
+  ListHeader,
 } from "./styles";
 
 export default function Home() {
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [orderBy, setOrderBy] = useState<string>('asc')
 
   useEffect(() => {
-    fetch("http://localhost:3001/contacts")
+    fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
       .then(async (response) => {
         const json = await response.json();
         setContacts(json);
@@ -25,7 +26,15 @@ export default function Home() {
       .catch((error: any) => {
         console.log("erro: ", error);
       });
-  }, []);
+  }, [orderBy]);
+
+  function handleToggleOrderBy() {
+    setOrderBy(
+        (prevState) => (prevState === 'asc' ? 'desc' : 'asc')
+      )
+  }
+
+  console.log(orderBy)
 
   return (
     <Container>
@@ -41,14 +50,15 @@ export default function Home() {
         <Link to="/new">Novo contato</Link>
       </Header>
 
-      <ListContainer>
-        <header>
-          <button type="button">
-            <span>Nome</span>
-            <img src={arrow} alt="Arrow" />
-          </button>
-        </header>
-      </ListContainer>
+      <ListHeader
+        orderBy={orderBy}
+      >
+        <button type="button" onClick={handleToggleOrderBy}>
+          <span>Nome</span>
+          <img src={arrow} alt="Arrow" />
+        </button>
+      </ListHeader>
+
       {contacts.map((contact: Contact) => (
         <Card key={contact.id}>
           <div className="info">
@@ -70,6 +80,7 @@ export default function Home() {
           </div>
         </Card>
       ))}
+
     </Container>
   );
 }

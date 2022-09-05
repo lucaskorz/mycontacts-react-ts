@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  useEffect,
+  useState,
+  useMemo
+} from "react";
 import { Link } from "react-router-dom";
 import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg";
@@ -15,7 +20,14 @@ import {
 
 export default function Home() {
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [orderBy, setOrderBy] = useState<string>('asc')
+  const [orderBy, setOrderBy] = useState<string>("asc");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
+  const filteredContacts = useMemo(() =>
+      contacts.filter((contact) =>
+        contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+      ), [contacts, searchTerm]
+  );
 
   useEffect(() => {
     fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
@@ -23,43 +35,49 @@ export default function Home() {
         const json = await response.json();
         setContacts(json);
       })
-      .catch((error: any) => {
-        console.log("erro: ", error);
+      .catch((error: Error) => {
+        console.log("error: ", error);
       });
   }, [orderBy]);
 
   function handleToggleOrderBy() {
-    setOrderBy(
-        (prevState) => (prevState === 'asc' ? 'desc' : 'asc')
-      )
+    setOrderBy((prevState) => (prevState === "asc" ? "desc" : "asc"));
   }
 
-  console.log(orderBy)
+  function handleToggleSearchTerm(event: ChangeEvent<HTMLInputElement>) {
+    event?.preventDefault();
+    setSearchTerm(event.target.value);
+  }
 
   return (
     <Container>
       <InputSearchContainer>
-        <input type="text" placeholder="Pesquise pelo nome..."></input>
+        <input
+          type="text"
+          value={searchTerm}
+          placeholder="Pesquise pelo nome..."
+          onChange={handleToggleSearchTerm}
+        ></input>
       </InputSearchContainer>
 
       <Header>
         <strong>
-          {contacts.length <= 0 ? "Nenhum " : contacts.length}
-          {contacts.length > 1 ? " contatos" : " contato"}
+          {filteredContacts.length <= 0 ? "Nenhum " : contacts.length}
+          {filteredContacts.length > 1 ? " contatos" : " contato"}
         </strong>
         <Link to="/new">Novo contato</Link>
       </Header>
 
-      <ListHeader
-        orderBy={orderBy}
-      >
-        <button type="button" onClick={handleToggleOrderBy}>
-          <span>Nome</span>
-          <img src={arrow} alt="Arrow" />
-        </button>
-      </ListHeader>
+      {filteredContacts.length > 0 && (
+        <ListHeader orderBy={orderBy}>
+          <button type="button" onClick={handleToggleOrderBy}>
+            <span>Nome</span>
+            <img src={arrow} alt="Arrow" />
+          </button>
+        </ListHeader>
+      )}
 
-      {contacts.map((contact: Contact) => (
+      {filteredContacts.map((contact: Contact) => (
         <Card key={contact.id}>
           <div className="info">
             <div className="contact-name">
@@ -80,7 +98,6 @@ export default function Home() {
           </div>
         </Card>
       ))}
-
     </Container>
   );
 }

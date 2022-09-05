@@ -37,6 +37,8 @@
         "implicit-arrow-linebreak": "off",
         "react/jsx-boolean-value": "off",
         "react/jsx-no-bind": "off",
-        "space-in-parens": "off"
+        "space-in-parens": "off",
+        "function-paren-newline": "off",
+        "react/jsx-closing-tag-location": "off"
     }
 }

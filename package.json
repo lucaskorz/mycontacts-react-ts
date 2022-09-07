@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@electron/remote": "^2.0.8",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
@@ -11,18 +12,39 @@
     "@types/react": "^18.0.12",
     "@types/react-dom": "^18.0.5",
     "@types/react-router": "^5.1.18",
+    "concurrently": "^7.4.0",
     "cross-env": "^7.0.3",
+    "electron-is-dev": "^2.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^5.3.0",
     "react-scripts": "5.0.1",
     "styled-components": "^5.3.5",
     "typescript": "^4.7.3",
+    "wait-on": "^6.0.1",
     "web-vitals": "^2.1.4"
   },
+  "main": "public/main.tsx",
+  "homepage": "./",
   "scripts": {
     "dev": "cross-env PORT=3000 react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "electron:serve": "concurrently -k \"cross-env BROWSER=none yarn dev\" \"yarn electron:start\"",
+    "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/main.tsx",
+    "electron:start": "wait-on tcp:3000 && electron ."
+  },
+  "build": {
+    "extends": null,
+    "appId": "com.example.electron-cra",
+    "files": [
+      "dist/**/*",
+      "build/**/*",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    }
   },
   "eslintConfig": {
     "extends": [
@@ -43,8 +65,11 @@
     ]
   },
   "devDependencies": {
+    "@types/electron": "^1.6.10",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.25",
+    "electron": "^20.1.1",
+    "electron-builder": "^23.3.3",
     "eslint": "^8.17.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.26.0",

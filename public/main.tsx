@@ -18,7 +18,7 @@ function createWindow() {
   win.loadURL(
     isDev
       ? 'http://localhost:3000'
-      : `file://${path.join(__dirname, '../build/index.html')}`
+      : 'http://172.25.240.1:3000' //`file://${path.join(__dirname, '../build/index.html')}
   )
 }
 

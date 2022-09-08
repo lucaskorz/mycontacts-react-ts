@@ -9,6 +9,7 @@ import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg";
 import trash from "../../assets/images/icons/trash.svg";
 import { Contact } from "../../models/Contacts";
+import Loader from "../../components/Loader";
 
 import {
   Container,
@@ -17,27 +18,38 @@ import {
   InputSearchContainer,
   ListHeader,
 } from "./styles";
+import ContactsServices from "../../services/ContactsServices";
 
 export default function Home() {
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [orderBy, setOrderBy] = useState<string>("asc");
+  const [orderBy, setOrderBy] = useState<'asc' | 'desc'>("asc");
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
 
-  const filteredContacts = useMemo(() =>
+  const filteredContacts = useMemo(
+    () =>
       contacts.filter((contact) =>
         contact.name.toLowerCase().includes(searchTerm.toLowerCase())
-      ), [contacts, searchTerm]
+      ),
+    [contacts, searchTerm]
   );
 
   useEffect(() => {
-    fetch(`http://localhost:3001/contacts?orderBy=${orderBy}`)
-      .then(async (response) => {
-        const json = await response.json();
-        setContacts(json);
-      })
-      .catch((error: Error) => {
-        console.log("error: ", error);
-      });
+    async function loadContacts() {
+      try {
+        setIsLoading(true);
+
+        const contactsList = await ContactsServices.listContacts(orderBy)
+
+        setContacts(contactsList);
+      } catch (error) {
+        console.log('Erro: ', error)
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadContacts()
   }, [orderBy]);
 
   function handleToggleOrderBy() {
@@ -51,6 +63,8 @@ export default function Home() {
 
   return (
     <Container>
+      <Loader isLoading={isLoading} />
+
       <InputSearchContainer>
         <input
           type="text"

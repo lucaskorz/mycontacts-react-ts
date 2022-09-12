@@ -1,4 +1,7 @@
-/node_modules
-/build
-/coverage
-/dist
+# modules to be ignored by git:
+
+node_modules
+build
+coverage
+dist
+.vscode

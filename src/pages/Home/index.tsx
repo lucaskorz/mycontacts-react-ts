@@ -22,7 +22,7 @@ import ContactsServices from "../../services/ContactsServices";
 
 export default function Home() {
   const [contacts, setContacts] = useState<Contact[]>([]);
-  const [orderBy, setOrderBy] = useState<'asc' | 'desc'>("asc");
+  const [orderBy, setOrderBy] = useState<"asc" | "desc">("asc");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -39,17 +39,17 @@ export default function Home() {
       try {
         setIsLoading(true);
 
-        const contactsList = await ContactsServices.listContacts(orderBy)
+        const contactsList = await ContactsServices.listContacts(orderBy);
 
         setContacts(contactsList);
       } catch (error) {
-        console.log('Erro: ', error)
+        console.log("Erro: ", error);
       } finally {
         setIsLoading(false);
       }
     }
 
-    loadContacts()
+    loadContacts();
   }, [orderBy]);
 
   function handleToggleOrderBy() {

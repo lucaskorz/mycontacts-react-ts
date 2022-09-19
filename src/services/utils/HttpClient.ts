@@ -1,3 +1,4 @@
+import APIError from "../../errors/APIError";
 import delay from "../../utils/delay";
 
 class HttpClient {
@@ -20,9 +21,7 @@ class HttpClient {
 
     if (response.ok) return body
 
-    throw new Error(
-      body?.error || `${response.status} - ${response.statusText}`
-    );
+    throw new APIError(response, body);
   }
 
   async post<T>(path: string, body: T) {

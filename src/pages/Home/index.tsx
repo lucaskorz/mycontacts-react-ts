@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import arrow from "../../assets/images/icons/arrow.svg";
 import edit from "../../assets/images/icons/edit.svg";
 import trash from "../../assets/images/icons/trash.svg";
+import sad from "../../assets/images/sad.svg";
 import { Contact } from "../../models/Contacts";
 import Loader from "../../components/Loader";
 
@@ -17,14 +18,17 @@ import {
   Card,
   InputSearchContainer,
   ListHeader,
+  ErrorContainer,
 } from "./styles";
 import ContactsServices from "../../services/ContactsServices";
+import Button from "../../components/Button";
 
 export default function Home() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [orderBy, setOrderBy] = useState<"asc" | "desc">("asc");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   const filteredContacts = useMemo(
     () =>
@@ -41,9 +45,10 @@ export default function Home() {
 
         const contactsList = await ContactsServices.listContacts(orderBy);
 
+        setHasError(false);
         setContacts(contactsList);
       } catch (error) {
-        console.log("Erro: ", error);
+        setHasError(true);
       } finally {
         setIsLoading(false);
       }
@@ -74,11 +79,13 @@ export default function Home() {
         ></input>
       </InputSearchContainer>
 
-      <Header>
-        <strong>
-          {filteredContacts.length <= 0 ? "Nenhum " : contacts.length}
-          {filteredContacts.length > 1 ? " contatos" : " contato"}
-        </strong>
+      <Header hasError={hasError}>
+        {!hasError && (
+          <strong>
+            {filteredContacts.length <= 0 ? "Nenhum " : contacts.length}
+            {filteredContacts.length > 1 ? " contatos" : " contato"}
+          </strong>
+        )}
         <Link to="/new">Novo contato</Link>
       </Header>
 
@@ -89,6 +96,20 @@ export default function Home() {
             <img src={arrow} alt="Arrow" />
           </button>
         </ListHeader>
+      )}
+
+      {hasError && (
+        <ErrorContainer>
+          <img src={sad} alt="Sad" />
+          <div className="details">
+            <strong>
+              Ocorreu um erro ao obter os seus contatos!
+            </strong>
+            <Button type="button">
+              Tentar novamente
+            </Button>
+          </div>
+        </ErrorContainer>
       )}
 
       {filteredContacts.map((contact: Contact) => (

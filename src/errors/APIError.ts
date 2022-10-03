@@ -1,6 +1,8 @@
 export default class APIError extends Error {
   response: Response;
+
   body: any;
+
   constructor(response: Response, body: any) {
     super();
 

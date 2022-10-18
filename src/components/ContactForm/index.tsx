@@ -1,4 +1,9 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  useState,
+  useEffect
+} from "react";
 
 import isEmailValid from "../../utils/isEmailValid";
 import formatPhone from "../../utils/formatPhone";
@@ -9,16 +14,20 @@ import Select from "../Select";
 import Button from "../Button";
 import { Form, ButtonContainer } from "./styles";
 import useErrors from '../../hooks/useErrors'
+import CategoriesService from '../../services/CategoriesServices'
+import { Categorie } from "../../models/Categories";
 
 type ContactFormProps = {
   buttonLabel: string;
 };
 
 export default function ContactForm({ buttonLabel }: ContactFormProps) {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [category, setCategory] = useState("");
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
+  const [categoryId, setCategoryId] = useState<string>("");
+  const [categories, setCategories] = useState<Categorie[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true)
 
   const {
     removeError,
@@ -28,6 +37,20 @@ export default function ContactForm({ buttonLabel }: ContactFormProps) {
   } = useErrors()
 
   const isFormValid = (name && errors.length === 0 );
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const categoriesList = await CategoriesService.listCategories()
+
+        setCategories(categoriesList)
+      } catch (error) {} finally {
+        setIsLoadingCategories(false)
+      }
+    }
+
+    loadCategories()
+  }, [])
 
   function handleNameChance(event: ChangeEvent<HTMLInputElement>) {
     setName(event.currentTarget.value)
@@ -90,14 +113,22 @@ export default function ContactForm({ buttonLabel }: ContactFormProps) {
         />
       </FormGroup>
 
-      <FormGroup>
+      <FormGroup isLoading={isLoadingCategories}>
         <Select
-          value={category}
-          onChange={(event) => setCategory(event.target.value)}
+          value={categoryId}
+          onChange={(event) => setCategoryId(event.target.value)}
+          disabled={isLoadingCategories}
         >
           <option value="">Categoria</option>
-          <option value="instagram">Instagram</option>
-          <option value="discord">Discord</option>
+
+          {categories.map((category) => (
+            <option
+              key={category.id}
+              value={category.id}
+            >
+              {category.name}
+            </option>
+          ))}
         </Select>
       </FormGroup>
 

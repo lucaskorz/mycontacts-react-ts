@@ -45,6 +45,7 @@
         "no-promise-executor-return": "off",
         "react-hooks/rules-of-hooks": "error",
         "class-methods-use-this": "off",
-        "no-empty": ["error", { "allowEmptyCatch": true }]
+        "no-empty": ["error", { "allowEmptyCatch": true }],
+        "radix": "off"
     }
 }

@@ -1,8 +1,8 @@
 export type Contact = {
-  id: number
+  id?: number
   name: string
   email: string
-  phone: number
+  phone: string
   category_id: number
-  category_name: string
+  category_name?: string
 }

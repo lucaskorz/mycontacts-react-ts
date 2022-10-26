@@ -16,12 +16,14 @@ import { Form, ButtonContainer } from "./styles";
 import useErrors from '../../hooks/useErrors'
 import CategoriesService from '../../services/CategoriesServices'
 import { Categorie } from "../../models/Categories";
+import { Contact } from "../../models/Contacts";
 
 type ContactFormProps = {
   buttonLabel: string;
+  onSubmit: (formData: Contact) => Promise<void>;
 };
 
-export default function ContactForm({ buttonLabel }: ContactFormProps) {
+export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps) {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
@@ -64,6 +66,13 @@ export default function ContactForm({ buttonLabel }: ContactFormProps) {
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
+
+    onSubmit({
+      name,
+      email,
+      phone,
+      category_id: parseInt(categoryId)
+    })
   }
 
   function handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
@@ -82,7 +91,7 @@ export default function ContactForm({ buttonLabel }: ContactFormProps) {
 
   return (
     <Form
-      onSubmit={() => handleSubmit}
+      onSubmit={handleSubmit}
       noValidate
     >
       <FormGroup error={getErrorMessageByFieldName('name')}>

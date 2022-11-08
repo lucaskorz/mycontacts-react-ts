@@ -71,7 +71,7 @@ export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps)
       name,
       email,
       phone,
-      category_id: parseInt(categoryId)
+      category_id: categoryId
     })
   }
 

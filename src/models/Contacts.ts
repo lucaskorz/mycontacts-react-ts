@@ -3,6 +3,6 @@ export type Contact = {
   name: string
   email: string
   phone: string
-  category_id: number
+  category_id: string
   category_name?: string
 }

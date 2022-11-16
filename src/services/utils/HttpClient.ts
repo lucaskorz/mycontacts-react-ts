@@ -8,15 +8,17 @@ class HttpClient {
     this.baseURL = baseURL
   }
 
-  get(path: string, options?: RequestInit) {
-    return this.makeRequest(path, {
+  async get(path: string, options?: RequestInit) {
+    const response = await this.makeRequest(path, {
       method: 'GET',
       headers: options?.headers
     })
+
+    return response
   }
 
-  post<T>(path: string, options?: RequestInit) {
-    this.makeRequest(path, {
+  async post(path: string, options?: RequestInit): Promise<void> {
+    await this.makeRequest(path, {
       method: 'POST',
       body: options?.body,
       headers: options?.headers
@@ -24,7 +26,7 @@ class HttpClient {
   }
 
   async makeRequest(path: string, options: RequestInit) {
-    await delay(500);
+    await delay(3000);
 
     const headers = new Headers()
     if (options.body) headers.append('Content-Type', 'application/json')

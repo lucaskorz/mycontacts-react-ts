@@ -8,7 +8,7 @@ import { Contact } from "../../models/Contacts";
 import ContactsServices from "../../services/ContactsServices";
 
 export default function NewContact() {
-  async function handleSubmit(formData: Contact) {
+  async function handleSubmit(formData: Contact): Promise<void> {
     try {
       const contact = {
         name: formData.name,
@@ -16,10 +16,8 @@ export default function NewContact() {
         phone: formData.phone,
         category_id: formData.category_id
       }
-      console.log(contact)
-      const response = await ContactsServices.createContacts(contact)
 
-      console.log(response)
+      await ContactsServices.createContacts(contact)
     } catch (error) {
       alert('Ocorreu um erro ao cadastrar o contato!')
     }

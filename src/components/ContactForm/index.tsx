@@ -30,6 +30,7 @@ export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps)
   const [categoryId, setCategoryId] = useState<string>("");
   const [categories, setCategories] = useState<Categorie[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true)
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
   const {
     removeError,
@@ -64,15 +65,19 @@ export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps)
     }
   }
 
-  function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    onSubmit({
+    setIsSubmitting(true)
+
+    await onSubmit({
       name,
       email,
       phone,
       category_id: categoryId
     })
+
+    setIsSubmitting(false)
   }
 
   function handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
@@ -100,6 +105,7 @@ export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps)
           placeholder="Nome *"
           value={name}
           onChange={handleNameChance}
+          disabled={isSubmitting}
         />
       </FormGroup>
 
@@ -110,6 +116,7 @@ export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps)
           type="email"
           value={email}
           onChange={handleEmailChange}
+          disabled={isSubmitting}
         />
       </FormGroup>
 
@@ -119,6 +126,7 @@ export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps)
           value={phone}
           onChange={handlePhoneChange}
           maxLength={15}
+          disabled={isSubmitting}
         />
       </FormGroup>
 
@@ -126,7 +134,7 @@ export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps)
         <Select
           value={categoryId}
           onChange={(event) => setCategoryId(event.target.value)}
-          disabled={isLoadingCategories}
+          disabled={isLoadingCategories || isSubmitting}
         >
           <option value="">Categoria</option>
 
@@ -146,6 +154,7 @@ export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps)
           danger={false}
           type="submit"
           disabled={!isFormValid}
+          isLoading={isSubmitting}
         >
           {buttonLabel}
         </Button>

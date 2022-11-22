@@ -19,6 +19,9 @@ declare module 'styled-components' {
         light: string;
         main: string;
         dark: string;
+      },
+      success: {
+        main: string
       }
     }
   }

@@ -2,27 +2,27 @@ export default class EventManager {
   listeners: any
 
   constructor() {
-    this.listeners = {}
+    this.listeners = new Map()
   }
 
   on(event: string, listener: any) {
-    if (!this.listeners[event]) {
-      this.listeners[event] = []
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, [])
     }
 
-    this.listeners[event].push(listener)
+    this.listeners.get(event).push(listener)
   }
 
   emit(event: string, payload: object | string) {
-    if (!this.listeners[event]) return;
+    if (!this.listeners.has(event)) return;
 
-    this.listeners[event].forEach((listener: any) => {
+    this.listeners.get(event).forEach((listener: any) => {
       listener(payload)
     });
   }
 
   removeListener(event: string, listenerToRemove: any) {
-    const listeners = this.listeners[event];
+    const listeners = this.listeners.get(event);
 
     if (!listeners) return;
 
@@ -30,27 +30,6 @@ export default class EventManager {
       (listener: any) => listener !== listenerToRemove
     );
 
-    this.listeners[event] = filteredListeners;
+    this.listeners.set(event, filteredListeners)
   }
 }
-
-const toastEventManager = new EventManager()
-
-function addToast1(payload: object) {
-  console.log('addtoast listener1', payload)
-}
-
-function addToast2(payload: object) {
-  console.log('addtoast listener1', payload)
-}
-
-toastEventManager.on('addToast', addToast1)
-toastEventManager.on('addToast', addToast2)
-
-toastEventManager.emit('addToast', { type: 'danger', text: 'Texto' })
-
-toastEventManager.removeListener('addToast', addToast1)
-
-toastEventManager.emit('addtoast', 'depois de remover...')
-
-console.log(toastEventManager)

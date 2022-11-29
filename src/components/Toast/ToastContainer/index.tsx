@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Container } from './styles'
 import ToastMessage, { VariantsType } from '../ToastMessage'
+import { toastEventManager } from '../../../utils/toast'
 
-type ToastContainerProps = {
+export type ToastContainerProps = {
   id: number
   type: string
   text: string
@@ -12,9 +13,7 @@ export default function ToastContainer() {
   const [messages, setMessages] = useState<ToastContainerProps[]>([])
 
   useEffect(() => {
-    function handleAddToast(event: CustomEventInit<{ type: string, text: string }>) {
-        const { type, text } = event.detail!
-
+    function handleAddToast({ type, text }: { type: string, text: string }) {
         setMessages((prevState) => [
           ...prevState,
           {
@@ -22,20 +21,27 @@ export default function ToastContainer() {
           }
         ])
     }
-    document.addEventListener('addtoast', handleAddToast)
+
+    toastEventManager.on('addtoast', handleAddToast)
 
     return () => {
-      document.removeEventListener('addtoast', handleAddToast)
+      toastEventManager.removeListener('addtoast', handleAddToast)
     }
   }, [])
+
+  function handleRemoveMessage(id: number) {
+    setMessages((prevState) => prevState.filter(
+      (message) => message.id !== id
+    ))
+  }
 
   return (
     <Container>
       {messages.map((message) => (
         <ToastMessage
           key={message.id}
-          type={message.type as VariantsType}
-          text={message.text}
+          message={message}
+          onRemoveMessage={handleRemoveMessage}
         />
       ))}
     </Container>

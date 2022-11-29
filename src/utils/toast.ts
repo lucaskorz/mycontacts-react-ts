@@ -1,17 +1,13 @@
 import { VariantsType } from "../components/Toast/ToastMessage";
+import EventManager from '../lib/EventManager'
 
 type ToastParams = {
   type: VariantsType
   text: string
 }
 
-export default function toast({ type, text }: ToastParams) {
-  const event = new CustomEvent('addtoast', {
-    detail: {
-      type,
-      text
-    }
-  });
+export const toastEventManager = new EventManager()
 
-  document.dispatchEvent(event)
+export default function toast({ type, text }: ToastParams) {
+  toastEventManager.emit('addtoast', { type, text })
 }

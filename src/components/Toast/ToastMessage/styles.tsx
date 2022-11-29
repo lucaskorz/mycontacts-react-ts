@@ -24,6 +24,7 @@ export const Container = styled.div<{ type: VariantsType }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 
   ${({ type }) => containerVariant[type] || containerVariant.default};
 

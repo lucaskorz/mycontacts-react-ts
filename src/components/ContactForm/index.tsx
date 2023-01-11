@@ -78,6 +78,10 @@ export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps)
     })
 
     setIsSubmitting(false)
+    setName('')
+    setEmail('')
+    setPhone('')
+    setCategoryId('')
   }
 
   function handleEmailChange(event: ChangeEvent<HTMLInputElement>) {

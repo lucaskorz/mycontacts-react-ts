@@ -10,7 +10,7 @@ class CategoriesService {
     this.httpClient = new HttpClient('http://localhost:3001')
   }
 
-  async listCategories(): Promise<Categorie[]> {
+  listCategories(): Promise<Categorie[]> {
     return this.httpClient.get('/categories')
   }
 }

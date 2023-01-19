@@ -46,6 +46,10 @@
         "react-hooks/rules-of-hooks": "error",
         "class-methods-use-this": "off",
         "no-empty": ["error", { "allowEmptyCatch": true }],
-        "radix": "off"
+        "radix": "off",
+        "camelcase": "off",
+        "no-restricted-globals": "off",
+        "no-use-before-define": "off"
+
     }
 }

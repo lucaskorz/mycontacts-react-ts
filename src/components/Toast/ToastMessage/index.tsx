@@ -4,7 +4,6 @@ import { Container } from "./styles";
 import xCircleIcon from '../../../assets/images/icons/x-circle.svg'
 import checkCircleIcon from '../../../assets/images/icons/check-circle.svg'
 import { ToastContainerProps } from "../ToastContainer";
-import { clearTimeout } from "timers";
 
 export type VariantsType = 'default' | 'success' | 'danger'
 

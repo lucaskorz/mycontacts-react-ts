@@ -9,14 +9,18 @@ class ContactsService {
     this.httpClient = new HttpClient('http://localhost:3001')
   }
 
-  async listContacts(orderBy: 'asc' | 'desc' = 'asc'): Promise<Contact[]> {
+  listContacts(orderBy: 'asc' | 'desc' = 'asc'): Promise<Contact[]> {
     return this.httpClient.get(`/contacts?orderBy=${orderBy}`)
   }
 
-  async createContacts(contact: Contact) {
-    await this.httpClient.post(`/contacts`, {
+  getContactById(id: string): Promise<Contact> {
+    return this.httpClient.get(`/contacts/${id}`)
+  }
+
+  createContacts(contact: Contact): Promise<void> {
+    return this.httpClient.post(`/contacts`, {
       body: contact as unknown as object as BodyInit
-    })
+    });
   }
 }
 

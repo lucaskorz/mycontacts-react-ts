@@ -20,7 +20,7 @@ import { Contact } from "../../models/Contacts";
 
 type ContactFormProps = {
   buttonLabel: string;
-  onSubmit: (formData: Contact) => Promise<void>;
+  onSubmit: (formData: Contact) => void;
 };
 
 export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps) {

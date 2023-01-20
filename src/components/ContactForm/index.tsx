@@ -20,14 +20,16 @@ import { Contact } from "../../models/Contacts";
 
 type ContactFormProps = {
   buttonLabel: string;
+  contact?: Contact;
   onSubmit: (formData: Contact) => void;
 };
 
-export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps) {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [phone, setPhone] = useState<string>("");
-  const [categoryId, setCategoryId] = useState<string>("");
+export default function ContactForm({ buttonLabel, onSubmit, contact }: ContactFormProps) {
+  const [name, setName] = useState<string>(contact?.name || '');
+  const [email, setEmail] = useState<string>(contact?.email || '');
+  const [phone, setPhone] = useState<string>(contact?.phone || '');
+  const [categoryId, setCategoryId] = useState<string>(contact?.category_id || '');
+
   const [categories, setCategories] = useState<Categorie[]>([]);
   const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
@@ -52,7 +54,7 @@ export default function ContactForm({ buttonLabel, onSubmit }: ContactFormProps)
       }
     }
 
-    loadCategories()
+    if (contact?.id) loadCategories()
   }, [])
 
   function handleNameChance(event: ChangeEvent<HTMLInputElement>) {

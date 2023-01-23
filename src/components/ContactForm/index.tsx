@@ -25,7 +25,10 @@ type ContactFormProps = {
   buttonLabel: string;
   onSubmit: (formData: Contact) => void;
 };
-export type ForwardedReferences = { setFieldsValues: (contact: Contact) => any; }
+export type ForwardedReferences = {
+  setFieldsValues?: (contact: Contact) => void;
+  resetFields?: () => void;
+}
 type ForwardedRefType = ForwardedRef<ForwardedReferences>
 
 export default forwardRef((
@@ -51,18 +54,24 @@ export default forwardRef((
   const isFormValid = name && errors.length === 0;
 
   useImperativeHandle(ref, () => ({
-      setFieldsValues: (contact: Contact) => {
-        setName(contact.name)
-        setEmail(contact.email)
-        setPhone(contact.phone)
-        setCategoryId(contact.category_id)
+    setFieldsValues: (contact: Contact): void => {
+      setName(contact.name ?? "")
+      setEmail(contact.email ?? "")
+      setPhone(formatPhone(contact.phone ?? ""))
+      setCategoryId(contact.category_id ?? "")
     },
+    resetFields: (): void => {
+      setName('');
+      setEmail('');
+      setPhone('');
+      setCategoryId('');
+    }
   }), [])
 
   useEffect(() => {
     async function loadCategories() {
       try {
-        const categoriesList = await CategoriesService.listCategories();
+        const categoriesList: Categorie[] = await CategoriesService.listCategories();
 
         setCategories(categoriesList);
       } catch (error) {
@@ -97,10 +106,6 @@ export default forwardRef((
     });
 
     setIsSubmitting(false);
-    setName("");
-    setEmail("");
-    setPhone("");
-    setCategoryId("");
   }
 
   function handleEmailChange(event: ChangeEvent<HTMLInputElement>) {

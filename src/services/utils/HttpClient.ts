@@ -25,6 +25,14 @@ class HttpClient {
     })
   }
 
+  async put(path: string, options?: RequestInit): Promise<void> {
+    await this.makeRequest(path, {
+      method: 'PUT',
+      body: options?.body,
+      headers: options?.headers
+    })
+  }
+
   async makeRequest(path: string, options: RequestInit) {
     await delay(3000);
 

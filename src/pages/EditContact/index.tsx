@@ -10,6 +10,7 @@ import toast from "../../utils/toast";
 export default function EditContact() {
   const contactFormRef = useRef<ForwardedReferences>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [contactName, setContactName] = useState<string>("")
 
   const history = useHistory()
   const { id } = useParams<{ id: string }>()
@@ -19,8 +20,9 @@ export default function EditContact() {
       try {
         const contact = await ContactsServices.getContactById(id)
 
-        contactFormRef.current?.setFieldsValues(contact)
+        contactFormRef.current?.setFieldsValues!(contact)
         setIsLoading(false)
+        setContactName(contact.name)
       } catch {
         history.push('/')
         toast({
@@ -33,14 +35,35 @@ export default function EditContact() {
     loadContact()
   }, [id, history])
 
-  function handleSubmit(formData?: Contact) {
-    //
+  async function handleSubmit(formData: Contact): Promise<void> {
+    try {
+      const contact = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        category_id: formData.category_id
+      }
+
+     const contactData = await ContactsServices.updateContact(id, contact)
+
+      setContactName(formData.name)
+      toast({
+        text: 'Contato editado com sucesso!',
+        type: 'success',
+        duration: 3000
+      })
+    } catch (error) {
+      toast({
+        text: 'Ocorreu um erro ao editar o contato!',
+        type: 'danger'
+      })
+    }
   }
 
   return (
     <>
       <Loader isLoading={isLoading} />
-      <PageHeader title="Editar Lucas Korz" />
+      <PageHeader title={isLoading ? 'Carregando... ' : `Editar ${contactName}`} />
 
       <ContactForm
         ref={contactFormRef}

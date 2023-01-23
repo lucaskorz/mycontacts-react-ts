@@ -17,8 +17,14 @@ class ContactsService {
     return this.httpClient.get(`/contacts/${id}`)
   }
 
-  createContacts(contact: Contact): Promise<void> {
+  createContact(contact: Contact): Promise<void> {
     return this.httpClient.post(`/contacts`, {
+      body: contact as unknown as object as BodyInit
+    });
+  }
+
+  updateContact(id: string, contact: Contact): Promise<void> {
+    return this.httpClient.put(`/contacts/${id}`, {
       body: contact as unknown as object as BodyInit
     });
   }

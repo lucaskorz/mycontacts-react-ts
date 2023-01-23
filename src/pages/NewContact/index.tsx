@@ -1,14 +1,13 @@
-import Input from "../../components/Input";
-import Select from "../../components/Select";
-import Button from "../../components/Button";
-
+import { useRef } from "react";
 import PageHeader from "../../components/PageHeader";
-import ContactForm from "../../components/ContactForm";
+import ContactForm, { ForwardedReferences } from "../../components/ContactForm";
 import { Contact } from "../../models/Contacts";
 import ContactsServices from "../../services/ContactsServices";
 import toast from "../../utils/toast";
 
 export default function NewContact() {
+  const contactFormRef = useRef<ForwardedReferences>(null)
+
   async function handleSubmit(formData: Contact): Promise<void> {
     try {
       const contact = {
@@ -18,8 +17,9 @@ export default function NewContact() {
         category_id: formData.category_id
       }
 
-      await ContactsServices.createContacts(contact)
+      await ContactsServices.createContact(contact)
 
+      contactFormRef.current?.resetFields!()
       toast({
         text: 'Contato cadastrado com sucesso!',
         type: 'success',
@@ -38,6 +38,7 @@ export default function NewContact() {
       <PageHeader title="Novo contato" />
 
       <ContactForm
+        ref={contactFormRef}
         buttonLabel="Cadastrar"
         onSubmit={handleSubmit}
       />

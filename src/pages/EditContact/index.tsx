@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useHistory } from "react-router";
-import ContactForm from "../../components/ContactForm";
+import ContactForm, { ForwardedReferences } from "../../components/ContactForm";
 import PageHeader from "../../components/PageHeader";
 import { Contact } from "../../models/Contacts";
 import ContactsServices from "../../services/ContactsServices";
@@ -8,18 +8,18 @@ import Loader from '../../components/Loader'
 import toast from "../../utils/toast";
 
 export default function EditContact() {
-  const [contact, setContact] = useState<Contact>()
+  const contactFormRef = useRef<ForwardedReferences>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const history = useHistory()
 
+  const history = useHistory()
   const { id } = useParams<{ id: string }>()
 
   useEffect(() => {
     async function loadContact() {
       try {
-        const contactData = await ContactsServices.getContactById(id)
-        setContact(contactData)
+        const contact = await ContactsServices.getContactById(id)
 
+        contactFormRef.current?.setFieldsValues(contact)
         setIsLoading(false)
       } catch {
         history.push('/')
@@ -43,10 +43,9 @@ export default function EditContact() {
       <PageHeader title="Editar Lucas Korz" />
 
       <ContactForm
-        key={contact?.id}
+        ref={contactFormRef}
         buttonLabel="Salvar alterações"
         onSubmit={handleSubmit}
-        contact={contact as Contact}
       />
     </>
   );

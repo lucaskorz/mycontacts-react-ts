@@ -32,7 +32,6 @@ export default forwardRef((
   props: ContactFormProps,
   ref: ForwardedRefType
 ) => {
-  console.log(ref)
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [phone, setPhone] = useState<string>("");

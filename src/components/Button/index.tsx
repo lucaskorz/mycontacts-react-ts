@@ -23,13 +23,15 @@ function Button({
     disabled,
     isLoading,
     children,
-    danger
+    danger,
+    onClick
   }: ButtonProps ) {
   return (
     <StyledButton
       danger={danger}
       type={type as "button"}
       disabled={disabled || isLoading}
+      onClick={onClick}
     >
       {!isLoading && children}
       {isLoading && <Spinner size={16} />}

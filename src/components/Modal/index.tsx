@@ -7,29 +7,58 @@ interface IModalProps extends IModalRequiredProps, IModalOptionalProps {}
 
 interface IModalOptionalProps {
   danger: boolean;
+  cancelLabel: string;
+  confirmLabel: string;
 }
 
 interface IModalRequiredProps {
   title: string;
-  bodyModel: string;
+  children: React.ReactNode;
+  visible: boolean;
+  onCancel: () => void
+  onConfirm: () => void
 }
 
 const defaultProps: IModalOptionalProps = {
   danger: false,
+  cancelLabel: 'Cancelar',
+  confirmLabel: 'Confirmar'
 };
 
-function Modal({ bodyModel, danger, title }: IModalProps) {
+function Modal({
+  children,
+  danger,
+  title,
+  cancelLabel,
+  confirmLabel,
+  onCancel,
+  onConfirm,
+  visible
+}: IModalProps) {
+  if (!visible) return null
+
   return ReactDOM.createPortal(
     <Overlay>
       <Container danger={danger}>
         <h1>{title}</h1>
-        <p>{bodyModel}</p>
+
+        <div className="modal-body">{children}</div>
+
         <Footer>
-          <button type="button" className="cancel-button">
-            Cancelar
+          <button
+            type="button"
+            className="cancel-button"
+            onClick={onCancel}
+          >
+            {cancelLabel}
           </button>
-          <Button danger={danger} type="button">
-            Deletar
+
+          <Button
+            danger={danger}
+            type="button"
+            onClick={onConfirm}
+          >
+            {confirmLabel}
           </Button>
         </Footer>
       </Container>

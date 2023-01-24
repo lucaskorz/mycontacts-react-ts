@@ -25,10 +25,11 @@ import {
   ListHeader,
   ErrorContainer,
   EmptyListContainer,
-  SearchNotFoundContainer
+  SearchNotFoundContainer,
 } from "./styles";
 import ContactsServices from "../../services/ContactsServices";
 import Button from "../../components/Button";
+import Modal from "../../components/Modal";
 
 export default function Home() {
   const [contacts, setContacts] = useState<Contact[]>([]);
@@ -36,6 +37,8 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState<boolean>(false);
+  const [contactBeingDeleted, setContactBeingDeleted] = useState<Contact | null>(null);
 
   const filteredContacts = useMemo(
     () =>
@@ -57,7 +60,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [orderBy])
+  }, [orderBy]);
 
   useEffect(() => {
     loadContacts();
@@ -73,12 +76,36 @@ export default function Home() {
   }
 
   function handleTryAgain() {
-    loadContacts()
+    loadContacts();
+  }
+
+  function handleDeleteContact(contact: Contact) {
+    setContactBeingDeleted(contact);
+    setIsDeleteModalVisible(true);
+  }
+
+  function handleCloseDeleteModal() {
+    setIsDeleteModalVisible(false);
+  }
+
+  function handleConfirmDeleteContact() {
+    //
   }
 
   return (
     <Container>
       <Loader isLoading={isLoading} />
+
+      <Modal
+        title={`Tem certeza que deseja remover o contato ${contactBeingDeleted?.name}?`}
+        confirmLabel="Deletar"
+        onCancel={handleCloseDeleteModal}
+        onConfirm={handleConfirmDeleteContact}
+        visible={isDeleteModalVisible}
+        danger
+      >
+        <p>Esta ação não poderá ser desfeita!</p>
+      </Modal>
 
       {contacts.length > 0 && (
         <InputSearchContainer>
@@ -91,17 +118,16 @@ export default function Home() {
         </InputSearchContainer>
       )}
 
-      <Header justifyContent={
-        hasError
-          ? 'flex-end'
-          : (
-            contacts.length > 0
-             ? 'space-between'
-             : 'center'
-          )
+      <Header
+        justifyContent={
+          hasError
+            ? "flex-end"
+            : contacts.length > 0
+            ? "space-between"
+            : "center"
         }
       >
-        {(!hasError && contacts.length > 0) && (
+        {!hasError && contacts.length > 0 && (
           <strong>
             {filteredContacts.length <= 0 ? "Nenhum " : contacts.length}
             {filteredContacts.length > 1 ? " contatos" : " contato"}
@@ -114,9 +140,7 @@ export default function Home() {
         <ErrorContainer>
           <img src={sad} alt="Sad" />
           <div className="details">
-            <strong>
-              Ocorreu um erro ao obter os seus contatos!
-            </strong>
+            <strong>Ocorreu um erro ao obter os seus contatos!</strong>
             <Button type="button" onClick={handleTryAgain}>
               Tentar novamente
             </Button>
@@ -126,24 +150,25 @@ export default function Home() {
 
       {!hasError && (
         <>
-          {(contacts.length < 1 && !isLoading) && (
+          {contacts.length < 1 && !isLoading && (
             <EmptyListContainer>
               <img src={emptyBox} alt="Empty Box" />
 
               <p>
-                Você ainda não tem nenhum contato cadastrado!
-                Clique no botão <strong>”Novo contato”</strong> à cima
-                para cadastrar o seu primeiro!
+                Você ainda não tem nenhum contato cadastrado! Clique no botão{" "}
+                <strong>”Novo contato”</strong> à cima para cadastrar o seu
+                primeiro!
               </p>
             </EmptyListContainer>
           )}
 
-          {(contacts.length > 0 && filteredContacts.length < 1) && (
+          {contacts.length > 0 && filteredContacts.length < 1 && (
             <SearchNotFoundContainer>
               <img src={magnifierQuestion} alt="Magnifier question" />
 
               <span>
-                Nenhum resultado foi encontrado para <strong>{searchTerm}</strong>.
+                Nenhum resultado foi encontrado para{" "}
+                <strong>{searchTerm}</strong>.
               </span>
             </SearchNotFoundContainer>
           )}
@@ -162,7 +187,9 @@ export default function Home() {
               <div className="info">
                 <div className="contact-name">
                   <strong>{contact.name}</strong>
-                  {contact.category_name && <small>{contact.category_name}</small>}
+                  {contact.category_name && (
+                    <small>{contact.category_name}</small>
+                  )}
                 </div>
                 <span>{contact.email}</span>
                 <span>{contact.phone}</span>
@@ -172,7 +199,10 @@ export default function Home() {
                 <Link to={`/edit/${contact.id}`}>
                   <img src={edit} alt="edit" />
                 </Link>
-                <button type="button">
+                <button
+                  onClick={() => handleDeleteContact(contact)}
+                  type="button"
+                >
                   <img src={trash} alt="edit" />
                 </button>
               </div>

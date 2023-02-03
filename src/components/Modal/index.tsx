@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom";
 
 import Button from "../Button";
+import ReactPortal from "../ReactPortal";
 import { Overlay, Container, Footer } from "./styles";
 
 interface IModalProps extends IModalRequiredProps, IModalOptionalProps {}
@@ -37,33 +38,34 @@ function Modal({
 }: IModalProps) {
   if (!visible) return null
 
-  return ReactDOM.createPortal(
-    <Overlay>
-      <Container danger={danger}>
-        <h1>{title}</h1>
+  return (
+    <ReactPortal containerId="modal-root">
+      <Overlay>
+        <Container danger={danger}>
+          <h1>{title}</h1>
 
-        <div className="modal-body">{children}</div>
+          <div className="modal-body">{children}</div>
 
-        <Footer>
-          <button
-            type="button"
-            className="cancel-button"
-            onClick={onCancel}
-          >
-            {cancelLabel}
-          </button>
+          <Footer>
+            <button
+              type="button"
+              className="cancel-button"
+              onClick={onCancel}
+            >
+              {cancelLabel}
+            </button>
 
-          <Button
-            danger={danger}
-            type="button"
-            onClick={onConfirm}
-          >
-            {confirmLabel}
-          </Button>
-        </Footer>
-      </Container>
-    </Overlay>,
-    document.getElementById("modal-root") as HTMLElement
+            <Button
+              danger={danger}
+              type="button"
+              onClick={onConfirm}
+            >
+              {confirmLabel}
+            </Button>
+          </Footer>
+        </Container>
+      </Overlay>
+    </ReactPortal>
   );
 }
 

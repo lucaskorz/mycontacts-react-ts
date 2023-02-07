@@ -20,6 +20,7 @@ import useErrors from "../../hooks/useErrors";
 import CategoriesService from "../../services/CategoriesServices";
 import { Categorie } from "../../models/Categories";
 import { Contact } from "../../models/Contacts";
+import useSafeAsyncState from "../../hooks/useSafeAsyncState";
 
 type ContactFormProps = {
   buttonLabel: string;
@@ -41,7 +42,7 @@ export default forwardRef((
   const [categoryId, setCategoryId] = useState<string>("");
 
   const [categories, setCategories] = useState<Categorie[]>([]);
-  const [isLoadingCategories, setIsLoadingCategories] = useState<boolean>(true);
+  const [isLoadingCategories, setIsLoadingCategories] = useSafeAsyncState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const {
@@ -81,7 +82,7 @@ export default forwardRef((
     }
 
     loadCategories();
-  }, []);
+  }, [setCategories, setIsLoadingCategories]);
 
   function handleNameChance(event: ChangeEvent<HTMLInputElement>) {
     setName(event.currentTarget.value);

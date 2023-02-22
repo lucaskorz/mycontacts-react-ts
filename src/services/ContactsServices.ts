@@ -1,5 +1,6 @@
 import { Contact } from "../models/Contacts";
 import delay from "../utils/delay";
+import ContactMapper from "./mappers/ContactMapper";
 import HttpClient from "./utils/HttpClient";
 
 class ContactsService {
@@ -18,14 +19,16 @@ class ContactsService {
   }
 
   createContact(contact: Contact): Promise<void> {
+    const bodyContact = ContactMapper.toPersistence(contact)
     return this.httpClient.post(`/contacts`, {
-      body: contact as unknown as object as BodyInit
+      body: bodyContact as unknown as object as BodyInit
     });
   }
 
   updateContact(id: string, contact: Contact): Promise<void> {
+    const bodyContact = ContactMapper.toPersistence(contact)
     return this.httpClient.put(`/contacts/${id}`, {
-      body: contact as unknown as object as BodyInit
+      body: bodyContact as unknown as object as BodyInit
     });
   }
 }

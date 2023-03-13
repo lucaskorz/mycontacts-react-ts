@@ -24,7 +24,7 @@ import useSafeAsyncState from "../../hooks/useSafeAsyncState";
 
 type ContactFormProps = {
   buttonLabel: string;
-  onSubmit: (formData: Contact) => void;
+  onSubmit: (formData: any) => void;
 };
 export type ForwardedReferences = {
   setFieldsValues?: (contact: Contact) => void;
@@ -59,7 +59,7 @@ export default forwardRef((
       setName(contact.name ?? "")
       setEmail(contact.email ?? "")
       setPhone(formatPhone(contact.phone ?? ""))
-      setCategoryId(contact.category_id ?? "")
+      setCategoryId(contact.category.id ?? "")
     },
     resetFields: (): void => {
       setName('');
@@ -99,7 +99,7 @@ export default forwardRef((
 
     setIsSubmitting(true);
 
-    await props.onSubmit({
+    props.onSubmit({
       name,
       email,
       phone,

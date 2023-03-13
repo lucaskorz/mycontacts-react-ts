@@ -22,6 +22,7 @@ export default function EditContact() {
       try {
         const contact = await ContactsServices.getContactById(id)
 
+        console.log(contact)
         safeAsyncAction(() => {
           contactFormRef.current?.setFieldsValues!(contact)
           setIsLoading(false)

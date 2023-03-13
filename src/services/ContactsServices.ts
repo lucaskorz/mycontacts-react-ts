@@ -10,12 +10,16 @@ class ContactsService {
     this.httpClient = new HttpClient('http://localhost:3001')
   }
 
-  listContacts(orderBy: 'asc' | 'desc' = 'asc'): Promise<Contact[]> {
-    return this.httpClient.get(`/contacts?orderBy=${orderBy}`)
+  async listContacts(orderBy: 'asc' | 'desc' = 'asc'): Promise<Contact[]> {
+    const contacts = await this.httpClient.get(`/contacts?orderBy=${orderBy}`)
+
+    return contacts.map(ContactMapper.toDomain)
   }
 
-  getContactById(id: string): Promise<Contact> {
-    return this.httpClient.get(`/contacts/${id}`)
+  async getContactById(id: string): Promise<Contact> {
+    const contact = await this.httpClient.get(`/contacts/${id}`)
+
+    return ContactMapper.toDomain(contact)
   }
 
   createContact(contact: Contact): Promise<void> {

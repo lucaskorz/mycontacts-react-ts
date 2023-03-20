@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useHistory } from "react-router";
-import ContactForm, { ForwardedReferences } from "../../components/ContactForm";
-import PageHeader from "../../components/PageHeader";
+import { ForwardedReferences } from "../../components/ContactForm";
 import { Contact } from "../../models/Contacts";
 import ContactsServices from "../../services/ContactsServices";
-import Loader from '../../components/Loader'
 import toast from "../../utils/toast";
 import useSafeAsyncAction from "../../hooks/useSafeAsyncAction";
+import Presentation from "./Presentation"
 
-export default function EditContact() {
+export default function Container() {
   const contactFormRef = useRef<ForwardedReferences>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [contactName, setContactName] = useState<string>("")
@@ -22,7 +21,6 @@ export default function EditContact() {
       try {
         const contact = await ContactsServices.getContactById(id)
 
-        console.log(contact)
         safeAsyncAction(() => {
           contactFormRef.current?.setFieldsValues!(contact)
           setIsLoading(false)
@@ -44,6 +42,7 @@ export default function EditContact() {
 
   async function handleSubmit(contact: Contact): Promise<void> {
     try {
+      setIsLoading(true)
       await ContactsServices.updateContact(id, contact)
 
       setContactName(contact.name)
@@ -53,23 +52,22 @@ export default function EditContact() {
         duration: 3000
       })
     } catch (error) {
+      console.log(error)
       toast({
         text: 'Ocorreu um erro ao editar o contato!',
         type: 'danger'
       })
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
-    <>
-      <Loader isLoading={isLoading} />
-      <PageHeader title={isLoading ? 'Carregando... ' : `Editar ${contactName}`} />
-
-      <ContactForm
-        ref={contactFormRef}
-        buttonLabel="Salvar alterações"
-        onSubmit={handleSubmit}
-      />
-    </>
+    <Presentation
+      isLoading={isLoading}
+      contactName={contactName}
+      contactFormRef={contactFormRef}
+      onSubmit={handleSubmit}
+    />
   );
 }

@@ -89,7 +89,9 @@ export default function Home() {
   }
 
   function handleConfirmDeleteContact() {
-    //
+    ContactsServices.deleteContact(contactBeingDeleted!.id!)
+    loadContacts()
+    setIsDeleteModalVisible(false);
   }
 
   return (

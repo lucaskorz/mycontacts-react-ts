@@ -33,6 +33,13 @@ class HttpClient {
     })
   }
 
+  async delete(path: string, options?: RequestInit): Promise<void> {
+    await this.makeRequest(path, {
+      method: 'DELETE',
+      headers: options?.headers
+    })
+  }
+
   async makeRequest(path: string, options: RequestInit) {
     await delay(3000);
 

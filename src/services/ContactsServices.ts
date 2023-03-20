@@ -35,6 +35,10 @@ class ContactsService {
       body: bodyContact as unknown as object as BodyInit
     });
   }
+
+  deleteContact(id: number): Promise<void> {
+    return this.httpClient.delete(`/contacts/${id}`)
+  }
 }
 
 export default new ContactsService()

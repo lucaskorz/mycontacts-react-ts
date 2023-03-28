@@ -5,9 +5,8 @@ import { Contact } from "../../models/Contacts";
 import ContactsServices from "../../services/ContactsServices";
 import toast from "../../utils/toast";
 import useSafeAsyncAction from "../../hooks/useSafeAsyncAction";
-import Presentation from "./Presentation"
 
-export default function Container() {
+export default function useEditContact() {
   const contactFormRef = useRef<ForwardedReferences>(null)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [contactName, setContactName] = useState<string>("")
@@ -52,7 +51,6 @@ export default function Container() {
         duration: 3000
       })
     } catch (error) {
-      console.log(error)
       toast({
         text: 'Ocorreu um erro ao editar o contato!',
         type: 'danger'
@@ -62,12 +60,10 @@ export default function Container() {
     }
   }
 
-  return (
-    <Presentation
-      isLoading={isLoading}
-      contactName={contactName}
-      contactFormRef={contactFormRef}
-      onSubmit={handleSubmit}
-    />
-  );
+  return {
+    isLoading,
+    contactName,
+    contactFormRef,
+    handleSubmit
+  };
 }

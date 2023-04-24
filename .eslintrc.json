@@ -1,56 +1,55 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:react-hooks/recommended"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "extends": [
-        "plugin:react/recommended",
-        "airbnb",
-        "plugin:react-hooks/recommended"
-    ],
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react",
-        "react-hooks"
-    ],
-    "rules": {
-        "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
-        "react/react-in-jsx-scope": "off",
-        "linebreak-style": 0,
-        "react/jsx-no-useless-fragment": "off",
-        "import/no-unresolved": "off",
-        "import/extensions": "off",
-        "import/prefer-default-export": "off",
-        "react/self-closing-comp": "off",
-        "quotes": "off",
-        "comma-dangle": "off",
-        "no-trailing-spaces": "off",
-        "semi": "off",
-        "no-unused-vars": "off",
-        "no-undef": "off",
-        "no-confusing-arrow": "off",
-        "indent": "off",
-        "implicit-arrow-linebreak": "off",
-        "react/jsx-boolean-value": "off",
-        "react/jsx-no-bind": "off",
-        "space-in-parens": "off",
-        "function-paren-newline": "off",
-        "react/jsx-closing-tag-location": "off",
-        "no-promise-executor-return": "off",
-        "react-hooks/rules-of-hooks": "error",
-        "class-methods-use-this": "off",
-        "no-empty": ["error", { "allowEmptyCatch": true }],
-        "radix": "off",
-        "camelcase": "off",
-        "no-restricted-globals": "off",
-        "no-use-before-define": "off",
-        "import/no-extraneous-dependencies":  "off",
-        "react/require-default-props": "off"
-    }
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react", "react-hooks"],
+  "rules": {
+    "react/jsx-filename-extension": [1, { "extensions": [".ts", ".tsx"] }],
+    "react/react-in-jsx-scope": "off",
+    "linebreak-style": 0,
+    "react/jsx-no-useless-fragment": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
+    "react/self-closing-comp": "off",
+    "quotes": "off",
+    "comma-dangle": "off",
+    "no-trailing-spaces": "off",
+    "semi": "off",
+    "no-unused-vars": "off",
+    "no-undef": "off",
+    "no-confusing-arrow": "off",
+    "indent": "off",
+    "implicit-arrow-linebreak": "off",
+    "react/jsx-boolean-value": "off",
+    "react/jsx-no-bind": "off",
+    "space-in-parens": "off",
+    "function-paren-newline": "off",
+    "react/jsx-closing-tag-location": "off",
+    "no-promise-executor-return": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "class-methods-use-this": "off",
+    "no-empty": ["error", { "allowEmptyCatch": true }],
+    "radix": "off",
+    "camelcase": "off",
+    "no-restricted-globals": "off",
+    "no-use-before-define": "off",
+    "import/no-extraneous-dependencies": "off",
+    "react/require-default-props": "off",
+    "no-nested-ternary": "off",
+    "react/jsx-one-expression-per-line": "off"
+  }
 }

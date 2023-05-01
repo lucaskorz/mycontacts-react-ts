@@ -20,6 +20,8 @@ interface IModalRequiredProps {
   onConfirm: () => void
 }
 
+// commit Lucas Korz 30/04
+
 const defaultProps: IModalOptionalProps = {
   danger: false,
   cancelLabel: 'Cancelar',

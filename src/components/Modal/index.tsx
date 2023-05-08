@@ -1,5 +1,4 @@
-import ReactDOM from "react-dom";
-
+import { useEffect, useState } from "react";
 import Button from "../Button";
 import ReactPortal from "../ReactPortal";
 import { Overlay, Container, Footer } from "./styles";
@@ -36,12 +35,32 @@ function Modal({
   onConfirm,
   visible
 }: IModalProps) {
-  if (!visible) return null
+  const [shouldRender, setShouldRender] = useState<boolean>(visible)
+
+  useEffect(() => {
+    if (visible) setShouldRender(true)
+
+    let timeoutId: NodeJS.Timeout;
+    if (!visible) {
+      timeoutId = setTimeout(() => setShouldRender(false), 300)
+    }
+
+    return () => {
+      clearTimeout(timeoutId)
+    }
+  }, [visible])
+
+  if (!shouldRender) {
+    return null
+  }
 
   return (
     <ReactPortal containerId="modal-root">
-      <Overlay>
-        <Container danger={danger}>
+      <Overlay isLeaving={!visible}>
+        <Container
+          danger={danger}
+          isLeaving={!visible}
+        >
           <h1>{title}</h1>
 
           <div className="modal-body">{children}</div>

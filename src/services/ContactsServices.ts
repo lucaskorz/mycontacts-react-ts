@@ -30,9 +30,8 @@ class ContactsService {
   }
 
   updateContact(id: string, contact: Contact): Promise<void> {
-    console.log(id)
     const bodyContact = ContactMapper.toPersistence(contact)
-    console.log(id)
+
     return this.httpClient.put(`/contacts/${id}`, {
       body: bodyContact as unknown as object as BodyInit
     });

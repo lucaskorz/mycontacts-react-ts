@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
 import Button from "../Button";
 import ReactPortal from "../ReactPortal";
 import { Overlay, Container, Footer } from "./styles";
+import useAnimatedUnmount from "../../hooks/useAnimatedUnmount";
 
 interface IModalProps extends IModalRequiredProps, IModalOptionalProps {}
 
@@ -35,28 +35,13 @@ function Modal({
   onConfirm,
   visible
 }: IModalProps) {
-  const [shouldRender, setShouldRender] = useState<boolean>(visible)
+  const { shouldRender, animatedElementRef } = useAnimatedUnmount(visible)
 
-  useEffect(() => {
-    if (visible) setShouldRender(true)
-
-    let timeoutId: NodeJS.Timeout;
-    if (!visible) {
-      timeoutId = setTimeout(() => setShouldRender(false), 300)
-    }
-
-    return () => {
-      clearTimeout(timeoutId)
-    }
-  }, [visible])
-
-  if (!shouldRender) {
-    return null
-  }
+  if (!shouldRender) return null
 
   return (
     <ReactPortal containerId="modal-root">
-      <Overlay isLeaving={!visible}>
+      <Overlay isLeaving={!visible} ref={animatedElementRef}>
         <Container
           danger={danger}
           isLeaving={!visible}

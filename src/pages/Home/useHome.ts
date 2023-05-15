@@ -25,7 +25,6 @@ export default function useHome() {
     [contacts, searchTerm]
   );
 
-  console.log({ isLoading })
   const loadContacts = useCallback(async () => {
     try {
       setIsLoading(true);

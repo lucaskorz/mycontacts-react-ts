@@ -10,7 +10,7 @@ export type VariantsType = "default" | "success" | "danger";
 type ToastProps = {
   message: ToastContainerProps;
   onRemoveMessage: (id: number) => void;
-  onAnimationEnd: (id: number) => void
+  onAnimationEnd: (id: number) => void;
   isLeaving: boolean;
 };
 
@@ -18,21 +18,23 @@ export default function ToastMessage({
   message,
   onRemoveMessage,
   isLeaving,
-  onAnimationEnd
+  onAnimationEnd,
 }: ToastProps) {
   const animatedElementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleAnimationEnd() {
-      onAnimationEnd(message.id)
+      onAnimationEnd(message.id);
     }
 
-    const elementRef = animatedElementRef.current
+    const elementRef = animatedElementRef.current;
     if (isLeaving) {
       elementRef?.addEventListener("animationend", handleAnimationEnd);
     }
 
-    return () => elementRef?.removeEventListener("animationend", handleAnimationEnd);
+    return () => {
+      elementRef?.removeEventListener("animationend", handleAnimationEnd);
+    }
   }, [isLeaving, message.id, onAnimationEnd]);
 
   useEffect(() => {
@@ -40,14 +42,10 @@ export default function ToastMessage({
       onRemoveMessage(message.id);
     }, message.duration || 7000);
 
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    return () => clearTimeout(timeoutId);
   }, [message, onRemoveMessage]);
 
-  function handleRemoveToast() {
-    onRemoveMessage(message.id);
-  }
+  const handleRemoveToast = () => onRemoveMessage(message.id);
 
   return (
     <Container

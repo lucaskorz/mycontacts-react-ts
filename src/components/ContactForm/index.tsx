@@ -11,7 +11,7 @@ import { Categorie } from "../../models/Categories";
 
 export type ContactFormProps = {
   buttonLabel: string;
-  onSubmit?: (formData: any) => void;
+  onSubmit: (formData: any) => void;
 };
 
 export type ForwardedReferences = {

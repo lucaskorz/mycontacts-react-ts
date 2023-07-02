@@ -50,6 +50,9 @@
     "import/no-extraneous-dependencies": "off",
     "react/require-default-props": "off",
     "no-nested-ternary": "off",
-    "react/jsx-one-expression-per-line": "off"
+    "react/jsx-one-expression-per-line": "off",
+    "react/no-unused-prop-types": "off",
+    "func-call-spacing": "off",
+    "no-spaced-func": "off"
   }
 }

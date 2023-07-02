@@ -27,7 +27,8 @@ export default function Header({
           {qtyOfFilteredContacts > 1 ? " contatos" : " contato"}
         </strong>
       )}
-      <Link to="/new">Novo contato</Link>
+
+      {!hasError && <Link to="/new">Novo contato</Link>}
     </Container>
   );
 }

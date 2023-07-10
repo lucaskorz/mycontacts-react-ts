@@ -1,4 +1,4 @@
-import { forwardRef, ForwardedRef } from "react";
+import { forwardRef, ForwardedRef, ChangeEvent } from "react";
 
 import FormGroup from "../FormGroup";
 import Input from "../Input";
@@ -78,7 +78,7 @@ export default forwardRef((
       <FormGroup isLoading={isLoadingCategories}>
         <Select
           value={categoryId}
-          onChange={(event) => setCategoryId(event.target.value)}
+          onChange={(event: ChangeEvent<HTMLSelectElement>) => setCategoryId(event.target.value)}
           disabled={isLoadingCategories || isSubmitting}
         >
           <option value="">Categoria</option>

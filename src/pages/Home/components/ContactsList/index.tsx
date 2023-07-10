@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Link } from "react-router-dom";
 import arrow from "../../../../assets/images/icons/arrow.svg";
 import edit from "../../../../assets/images/icons/edit.svg";
@@ -13,7 +14,7 @@ interface ContactsListProps {
   onDeleteContact: (contact: Contact) => void
 }
 
-export default function ContactsList({
+function ContactsList({
   filteredContacts,
   orderBy,
   onToggleOrderBy,
@@ -54,3 +55,5 @@ export default function ContactsList({
     </>
   );
 }
+
+export default memo(ContactsList)

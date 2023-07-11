@@ -52,7 +52,7 @@ export const Container = styled.div<{ type: VariantsType, isLeaving: boolean }>`
   animation: ${messageIn} 0.3s;
 
   ${({ isLeaving }) => isLeaving && css`
-    animation: ${messageOut} 0.2s;
+    animation: ${messageOut} 0.2s forwards;
   `}
 
   ${({ type }) => containerVariant[type] || containerVariant.default};

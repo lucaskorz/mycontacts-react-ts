@@ -4,7 +4,7 @@ import {
   useState,
   useMemo,
   useCallback,
-  useTransition
+  useDeferredValue
 } from "react";
 import ContactsServices from "../../services/ContactsServices";
 import { Contact } from "../../models/Contacts";
@@ -12,22 +12,21 @@ import { Contact } from "../../models/Contacts";
 export default function useHome() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [orderBy, setOrderBy] = useState<"asc" | "desc">("asc");
-  const [searchTerm, setSearchTerm] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState<boolean>(false);
   const [contactBeingDeleted, setContactBeingDeleted] = useState<Contact | null>(null);
-  const [filteredContacts, setFilteredContacts] = useState<Contact[]>([])
 
-  const [isPending, startTransition] = useTransition()
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const deferredSearchTerm = useDeferredValue(searchTerm)
 
-  // const filteredContacts = useMemo(
-  //   () =>
-  //     contacts.filter((contact) =>
-  //       contact.name.toLowerCase().includes(searchTerm.toLowerCase())
-  //     ),
-  //   [contacts, searchTerm]
-  // );
+  const filteredContacts = useMemo(
+    () =>
+      contacts.filter((contact) =>
+        contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+      ),
+    [contacts, deferredSearchTerm]
+  );
 
   const loadContacts = useCallback(async () => {
     try {
@@ -36,7 +35,6 @@ export default function useHome() {
 
       setHasError(false);
       setContacts(contactsList);
-      setFilteredContacts(contactsList)
     } catch (error) {
       setHasError(true);
       setContacts([])
@@ -55,15 +53,7 @@ export default function useHome() {
 
   function handleToggleSearchTerm(event: ChangeEvent<HTMLInputElement>) {
     event?.preventDefault();
-
-    const { value } = event.target;
-    setSearchTerm(value);
-
-    startTransition(() => {
-      setFilteredContacts(contacts.filter((contact) =>
-        contact.name.toLowerCase().includes(value.toLowerCase())
-      ))
-    })
+    setSearchTerm(event.target.value);
   }
 
   function handleTryAgain() {
@@ -86,7 +76,6 @@ export default function useHome() {
   }
 
   return {
-    isPending,
     isLoading,
     isDeleteModalVisible,
     contactBeingDeleted,

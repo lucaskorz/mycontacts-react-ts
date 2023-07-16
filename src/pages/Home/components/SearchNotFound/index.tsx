@@ -12,7 +12,7 @@ export default function SearchNotFound({ searchTerm }: SearchNotFoundProps) {
 
       <span>
         Nenhum resultado foi encontrado para
-        <strong>{searchTerm}</strong>.
+        <strong> {searchTerm}</strong>.
       </span>
     </Container>
   )

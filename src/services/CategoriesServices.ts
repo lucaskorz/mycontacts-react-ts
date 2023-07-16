@@ -11,8 +11,8 @@ class CategoriesService {
     this.httpClient = new HttpClient('http://localhost:3001')
   }
 
-  async listCategories(): Promise<Categorie[]> {
-    const categories = await this.httpClient.get('/categories')
+  async listCategories(signal: AbortSignal ): Promise<Categorie[]> {
+    const categories = await this.httpClient.get('/categories', { signal })
 
     return categories.map(CategoryMapper.toDomain)
   }

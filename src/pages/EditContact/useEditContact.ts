@@ -16,16 +16,23 @@ export default function useEditContact() {
   const safeAsyncAction = useSafeAsyncAction()
 
   useEffect(() => {
+    const controller = new AbortController()
+
     async function loadContact() {
       try {
-        const contact = await ContactsServices.getContactById(id)
+        const contact = await ContactsServices.getContactById(
+          id,
+          controller.signal
+        )
 
         safeAsyncAction(() => {
           contactFormRef.current?.setFieldsValues!(contact)
           setIsLoading(false)
           setContactName(contact.name)
         })
-      } catch {
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return
+
         safeAsyncAction(() => {
           history.push('/')
           toast({
@@ -37,6 +44,8 @@ export default function useEditContact() {
     }
 
     loadContact()
+
+    return () => controller.abort();
   }, [id, history, safeAsyncAction])
 
   async function handleSubmit(contact: Contact): Promise<void> {

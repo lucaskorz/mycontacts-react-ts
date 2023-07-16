@@ -28,14 +28,16 @@ export default function useHome() {
     [contacts, deferredSearchTerm]
   );
 
-  const loadContacts = useCallback(async () => {
+  const loadContacts = useCallback(async (signal: AbortSignal) => {
     try {
       setIsLoading(true);
-      const contactsList = await ContactsServices.listContacts(orderBy);
+      const contactsList = await ContactsServices.listContacts(orderBy, signal);
 
       setHasError(false);
       setContacts(contactsList);
     } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') return
+
       setHasError(true);
       setContacts([])
     } finally {
@@ -44,7 +46,13 @@ export default function useHome() {
   }, [orderBy]);
 
   useEffect(() => {
-    loadContacts();
+    const controller = new AbortController()
+
+    loadContacts(controller.signal);
+
+    return () => {
+      controller.abort()
+    }
   }, [loadContacts]);
 
   const handleToggleOrderBy = useCallback(() => {
@@ -56,8 +64,10 @@ export default function useHome() {
     setSearchTerm(event.target.value);
   }
 
-  function handleTryAgain() {
-    loadContacts();
+  function handleTryAgain(signal?: AbortSignal) {
+    const controller = new AbortController()
+
+    loadContacts(signal || controller.signal);
   }
 
   const handleDeleteContact = useCallback((contact: Contact) => {
@@ -69,9 +79,11 @@ export default function useHome() {
     setIsDeleteModalVisible(false);
   }
 
-  function handleConfirmDeleteContact() {
+  function handleConfirmDeleteContact(signal?: AbortSignal) {
     ContactsServices.deleteContact(contactBeingDeleted!.id!)
-    loadContacts()
+
+    const controller = new AbortController()
+    loadContacts(signal || controller.signal)
     setIsDeleteModalVisible(false);
   }
 

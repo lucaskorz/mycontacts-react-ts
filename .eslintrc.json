@@ -53,6 +53,7 @@
     "react/jsx-one-expression-per-line": "off",
     "react/no-unused-prop-types": "off",
     "func-call-spacing": "off",
-    "no-spaced-func": "off"
+    "no-spaced-func": "off",
+    "react-hooks/exhaustive-deps": "off"
   }
 }

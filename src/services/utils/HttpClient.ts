@@ -11,7 +11,8 @@ class HttpClient {
   async get(path: string, options?: RequestInit) {
     const response = await this.makeRequest(path, {
       method: 'GET',
-      headers: options?.headers
+      headers: options?.headers,
+      signal: options?.signal
     })
 
     return response
@@ -56,6 +57,7 @@ class HttpClient {
       method: options.method,
       body: JSON.stringify(options.body),
       headers,
+      signal: options.signal
     })
 
     const contentType = response.headers.get('Content-Type')

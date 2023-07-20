@@ -10,20 +10,12 @@ type ButtonProps = {
   children?: React.ReactNode
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
-const defaultProps: ButtonProps = {
-  type: "button",
-  disabled: false,
-  isLoading: false,
-  danger: false,
-  children: null
-}
-
 function Button({
-    type,
-    disabled,
-    isLoading,
-    children,
-    danger,
+    type = 'button',
+    disabled = false,
+    isLoading = false,
+    children = null,
+    danger = false,
     onClick
   }: ButtonProps ) {
   return (
@@ -38,7 +30,5 @@ function Button({
     </StyledButton>
   )
 }
-
-Button.defaultProps = defaultProps
 
 export default Button

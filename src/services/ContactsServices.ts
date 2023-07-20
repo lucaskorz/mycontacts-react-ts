@@ -10,7 +10,7 @@ class ContactsService {
     this.httpClient = new HttpClient('http://localhost:3001')
   }
 
-  async listContacts(orderBy: 'asc' | 'desc', signal: AbortSignal): Promise<Contact[]> {
+  async listContacts(signal: AbortSignal, orderBy: 'asc' | 'desc'): Promise<Contact[]> {
     const contacts = await this.httpClient.get(`/contacts?orderBy=${orderBy || 'asc'}`, { signal })
 
     return contacts.map(ContactMapper.toDomain)

@@ -8,7 +8,11 @@ export interface AuxProps {
   isLoading?: boolean;
 }
 
-export default function FormGroup({ children, error, isLoading }: AuxProps) {
+export default function FormGroup({
+  children,
+  error = '',
+  isLoading = false
+}: AuxProps) {
   return (
     <Container>
       <div className="form-item">
@@ -25,8 +29,3 @@ export default function FormGroup({ children, error, isLoading }: AuxProps) {
     </Container>
   );
 }
-
-FormGroup.defaultProps = {
-  error: null,
-  isLoading: false
-};

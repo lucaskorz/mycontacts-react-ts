@@ -5,7 +5,7 @@ type ReactPortalProps = {
   children: React.ReactNode
 }
 
-export default function ReactPortal({ containerId, children }: ReactPortalProps) {
+export default function ReactPortal({ containerId = 'portal-root', children }: ReactPortalProps) {
   let container = document.getElementById(containerId)
 
   if (!container) {

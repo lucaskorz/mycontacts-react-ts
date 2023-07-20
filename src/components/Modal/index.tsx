@@ -7,30 +7,23 @@ interface IModalProps extends IModalRequiredProps, IModalOptionalProps {}
 
 interface IModalOptionalProps {
   danger: boolean;
-  cancelLabel: string;
+  cancelLabel?: string;
   confirmLabel: string;
 }
 
 interface IModalRequiredProps {
   title: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   visible: boolean;
   onCancel: () => void
   onConfirm: () => void
 }
-
-const defaultProps: IModalOptionalProps = {
-  danger: false,
-  cancelLabel: 'Cancelar',
-  confirmLabel: 'Confirmar'
-};
-
 function Modal({
-  children,
-  danger,
+  children = null,
+  danger = false,
   title,
-  cancelLabel,
-  confirmLabel,
+  cancelLabel = 'Cancelar',
+  confirmLabel = 'Confirmar',
   onCancel,
   onConfirm,
   visible
@@ -72,7 +65,5 @@ function Modal({
     </ReactPortal>
   );
 }
-
-Modal.defaultProps = defaultProps;
 
 export default Modal;
